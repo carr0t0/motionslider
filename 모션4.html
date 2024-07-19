@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG 애니메이션 및 색상 조정</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            border: #000 1px solid;
+        }
+        #svg-container {
+            border: #000 1px solid;
+        }
+        svg {
+            display: none;
+            width: 320px;
+            height: 320px;
+        }
+        #slider-container {
+            border: #000 1px solid;
+            margin-top: 30vh;
+            width: 50vw;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        #slider {
+            position: absolute;
+            border: #000 1px solid;
+            width: 90%;
+            -webkit-appearance: none;
+            background: transparent;
+            position: relative;
+            z-index: 100;
+        }
+        #slider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: hsla(0, 0%, 0%, 0);
+            transform: translateY(-50%);
+            z-index: 1;
+            transition: background-color 0.5s;
+        }
+        #slider:hover::before {
+            background: hsla(0, 100%, 50%, 0);
+        }
+        #slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 7px;
+            height: 7px;
+            background: #000;
+            border: none;
+            border-radius: 0;
+            transition: all 0.5s;
+            z-index: 100;
+        }
+        #slider:hover::-webkit-slider-thumb {
+            width: 6px;
+            height: 45px;
+            background: red;
+            border-radius: 3.5px;
+            z-index: 100;
+        }
+        .slider-ticks {
+            position: absolute;
+            width: 89.5%;
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+        }
+        .slider-tick {
+            position: absolute;
+            height: 5px;
+            width: 5px;
+            background-color: #000;
+            transform: translateX(-2px) translateY(0);
+            transition: all 0.5s;
+        }
+        .slider-tick.hovered {
+            height: 4px;
+            width: 4px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .hue-slider {
+            width: 80%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .color-preview {
+            width: 20px;
+            height: 20px;
+            border: 1px solid black;
+            margin-left: 10px;
+        }
+        .hue-value-input {
+            width: 50px;
+            margin-left: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG 애니메이션을 담당하는 부분 -->
+    <div id="svg-container">
+        <svg id="frame1" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="160" fill="red"/>
+            <rect x="160" y="160" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame2" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="150" fill="red"/>
+            <rect x="145" y="145" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame3" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="140" fill="red"/>
+            <rect x="130" y="130" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame4" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="130" fill="red"/>
+            <rect x="115" y="115" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame5" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="120" fill="red"/>
+            <rect x="100" y="100" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame6" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="110" fill="red"/>
+            <rect x="85" y="85" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame7" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="100" fill="red"/>
+            <rect x="70" y="70" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame8" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="90" fill="red"/>
+            <rect x="55" y="55" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame9" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="80" fill="red"/>
+            <rect x="40" y="40" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame10" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="70" fill="red"/>
+            <rect x(25) y(25) width(0) height(0) fill(blue) />
+        </svg>
+        <svg id="frame11" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="60" fill="red"/>
+            <rect x="10" y="10" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame12" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="50" fill="red"/>
+            <rect x="-5" y="-5" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame13" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="40" fill="red"/>
+            <rect x="-20" y="-20" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame14" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="30" fill="red"/>
+            <rect x="-35" y="-35" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame15" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="20" fill="red"/>
+            <rect x="-50" y="-50" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame16" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="10" fill="red"/>
+            <rect x="-65" y="-65" width="0" height="0" fill="blue"/>
+        </svg>
+        <svg id="frame17" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="10" height="10" fill="blue"/>
+        </svg>
+        <svg id="frame18" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="20" height="20" fill="blue"/>
+        </svg>
+        <svg id="frame19" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="30" height="30" fill="blue"/>
+        </svg>
+        <svg id="frame20" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="40" height="40" fill="blue"/>
+        </svg>
+        <svg id="frame21" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="50" height="50" fill="blue"/>
+        </svg>
+        <svg id="frame22" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="60" height="60" fill="blue"/>
+        </svg>
+        <svg id="frame23" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="70" height="70" fill="blue"/>
+        </svg>
+        <svg id="frame24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="80" height="80" fill="blue"/>
+        </svg>
+        <svg id="frame25" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="90" height="90" fill="blue"/>
+        </svg>
+        <svg id="frame26" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="100" height="100" fill="blue"/>
+        </svg>
+        <svg id="frame27" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="110" height="110" fill="blue"/>
+        </svg>
+        <svg id="frame28" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="120" height="120" fill="blue"/>
+        </svg>
+        <svg id="frame29" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="130" height="130" fill="blue"/>
+        </svg>
+        <svg id="frame30" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="140" height="140" fill="blue"/>
+        </svg>
+        <svg id="frame31" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="150" height="150" fill="blue"/>
+        </svg>
+        <svg id="frame32" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="160" height="160" fill="blue"/>
+        </svg>
+        <svg id="frame33" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="170" height="170" fill="blue"/>
+        </svg>
+        <svg id="frame34" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="180" height="180" fill="blue"/>
+        </svg>
+        <svg id="frame35" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="190" height="190" fill="blue"/>
+        </svg>
+        <svg id="frame36" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="200" height="200" fill="blue"/>
+        </svg>
+        <svg id="frame37" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="210" height="210" fill="blue"/>
+        </svg>
+        <svg id="frame38" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="220" height="220" fill="blue"/>
+        </svg>
+        <svg id="frame39" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="230" height="230" fill="blue"/>
+        </svg>
+        <svg id="frame40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="240" height="240" fill="blue"/>
+        </svg>
+        <svg id="frame41" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="250" height="250" fill="blue"/>
+        </svg>
+        <svg id="frame42" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="260" height="260" fill="blue"/>
+        </svg>
+        <svg id="frame43" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="270" height="270" fill="blue"/>
+        </svg>
+        <svg id="frame44" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="280" height="280" fill="blue"/>
+        </svg>
+        <svg id="frame45" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="290" height="290" fill="blue"/>
+        </svg>
+        <svg id="frame46" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="300" height="300" fill="blue"/>
+        </svg>
+        <svg id="frame47" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="310" height="310" fill="blue"/>
+        </svg>
+        <svg id="frame48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="160" cy="160" r="0" fill="red"/>
+            <rect x="-80" y="-80" width="320" height="320" fill="blue"/>
+        </svg>
+    
+    </div>
+
+    <!-- 애니메이션 제어를 위한 슬라이더 -->
+    <div id="slider-container">
+        <input type="range" id="slider" min="1" max="48" value="1" aria-label="애니메이션 프레임 슬라이더">
+        <div id="slider-ticks" class="slider-ticks" aria-hidden="true">
+            <!-- 슬라이더 눈금 표시 -->
+        </div>
+    </div>
+
+<!-- 원과 사각형의 HSL 색상 조절을 위한 슬라이더 -->
+<div id="hue-slider-container">
+    <!-- 원의 색상 슬라이더 -->
+    <div class="slider-container">
+        <input type="range" id="circle-hue-slider" class="hue-slider" min="0" max="360" value="0">
+        <div id="circle-color-preview" class="color-preview"></div>
+    </div>
+    <output id="circle-hue-value">0</output>
+    
+    <!-- 사각형의 색상 슬라이더 -->
+    <div class="slider-container">
+        <input type="range" id="rect-hue-slider" class="hue-slider" min="0" max="360" value="0">
+        <div id="rect-color-preview" class="color-preview"></div>
+    </div>
+    <output id="rect-hue-value">0</output>
+</div>
+
+    <script>
+        // 전체 프레임 수
+        const totalFrames = 48;
+        // 슬라이더와 눈금자 관련 요소들
+        const slider = document.getElementById('slider');
+        const sliderTicks = document.getElementById('slider-ticks');
+        // 현재 표시 중인 프레임 번호
+        let currentFrame = 1;
+        // 자동 재생 여부 및 자동 재생 인터벌 ID
+        let autoPlay = true;
+        let intervalId;
+
+        // 모든 SVG 숨기는 함수
+        function hideAllFrames() {
+            const svgs = document.querySelectorAll('#svg-container svg');
+            svgs.forEach(svg => {
+                svg.style.display = 'none';
+            });
+        }
+
+        // 슬라이더 눈금자 초기화 함수
+        function initializeSlider() {
+            const stepSize = 100 / (totalFrames - 1);
+            for (let i = 0; i < totalFrames; i++) {
+                const tick = document.createElement('div');
+                tick.classList.add('slider-tick');
+                tick.style.left = `${i * stepSize}%`;
+                sliderTicks.appendChild(tick);
+            }
+        }
+
+        // 프레임 표시 함수
+        function showFrame(frame) {
+            hideAllFrames();
+            const currentSvg = document.getElementById(`frame${frame}`);
+            if (currentSvg) {
+                currentSvg.style.display = 'block';
+            }
+        }
+
+        // 자동재생 함수
+        function startAutoPlay() {
+            intervalId = setInterval(() => {
+                currentFrame = (currentFrame % totalFrames) + 1;
+                slider.value = currentFrame;
+                showFrame(currentFrame);
+            }, 1000 / 12); // 12 FPS로 느리게 조정
+        }
+
+        // 슬라이더 초기화
+        initializeSlider();
+
+        // 슬라이더 입력 이벤트 리스너
+        slider.addEventListener('input', (event) => {
+            currentFrame = parseInt(event.target.value);
+            showFrame(currentFrame);
+            autoPlay = false;
+            clearInterval(intervalId);
+        });
+
+        // 마우스 호버 시 프레임 변경 이벤트 리스너
+        slider.addEventListener('mousemove', (event) => {
+            const sliderWidth = slider.offsetWidth;
+            const rect = slider.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const percentage = mouseX / sliderWidth;
+            const frame = Math.round(percentage * (totalFrames - 1)) + 1;
+            slider.value = frame;
+            showFrame(frame);
+            autoPlay = false;
+            clearInterval(intervalId);
+        });
+
+        // 슬라이더에서 마우스가 나가면 자동재생 시작 이벤트 리스너
+        slider.addEventListener('mouseleave', () => {
+            autoPlay = true;
+            startAutoPlay();
+        });
+
+        // 슬라이더 thumb에 호버 이벤트 리스너 추가
+        slider.addEventListener('mouseover', () => {
+            const ticks = document.querySelectorAll('.slider-tick');
+            ticks.forEach(tick => {
+                tick.classList.add('hovered');
+            });
+        });
+
+        // 슬라이더 thumb에 호버 해제 이벤트 리스너 추가
+        slider.addEventListener('mouseout', () => {
+            const ticks = document.querySelectorAll('.slider-tick');
+            ticks.forEach(tick => {
+                tick.classList.remove('hovered');
+            });
+        });
+
+    // 원 색상 슬라이더 입력 이벤트 리스너
+    const circleHueSlider = document.getElementById('circle-hue-slider');
+    const circleHueValue = document.getElementById('circle-hue-value');
+    const circleColorPreview = document.getElementById('circle-color-preview');
+    circleHueSlider.addEventListener('input', (event) => {
+        const hueValue = event.target.value;
+        const circles = document.querySelectorAll('#svg-container circle');
+        circles.forEach(circle => {
+            circle.setAttribute('fill', `hsl(${hueValue}, 100%, 50%)`);
+        });
+        circleHueValue.textContent = hueValue;
+        circleColorPreview.style.backgroundColor = `hsl(${hueValue}, 100%, 50%)`;
+    });
+
+    // 사각형 색상 슬라이더 입력 이벤트 리스너
+    const rectHueSlider = document.getElementById('rect-hue-slider');
+    const rectHueValue = document.getElementById('rect-hue-value');
+    const rectColorPreview = document.getElementById('rect-color-preview');
+    rectHueSlider.addEventListener('input', (event) => {
+        const hueValue = event.target.value;
+        const rects = document.querySelectorAll('#svg-container rect');
+        rects.forEach(rect => {
+            rect.setAttribute('fill', `hsl(${hueValue}, 100%, 50%)`);
+        });
+        rectHueValue.textContent = hueValue;
+        rectColorPreview.style.backgroundColor = `hsl(${hueValue}, 100%, 50%)`;
+    });
+
+
+
+        // 초기 프레임 표시 및 자동재생 시작
+        showFrame(currentFrame);
+        if (autoPlay) {
+            startAutoPlay();
+        }
+    </script>
+</body>
+</html>
